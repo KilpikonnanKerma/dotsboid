@@ -1,0 +1,58 @@
+BOID käyttäen DOTS/ECS
+
+suunnittelu/ohjeet boidien tekoon käyttäen Unityn
+Data Oriented Techonology Stackia (DOTS) ja Entity Component Systeemiä (ECS).
+
+Tehty käyttäen Unity versiota 6000.0.42f1
+
+1. Valmistelu
+
+	- Asenna entities ja entities graphics paketit ( HOX! entities graphics toimii vain URP tai HDRP render pipelineilla )
+	
+	- Aseta projektin asetuksista "When entering Play Mode" vaihtoehtoon "Do not reload Domain or Scene"
+	
+	- Tarkista että että käytät "Forward+" rendering pathia. Tässä versiossa käytössä automaattisesti, mutta vanhemmissa
+	unity versioissa ei välttämättä ole.
+	
+	- Ota käyttöön
+		1. Burst compiler
+		2. Hybrid Renderer
+	
+2. Datakomponenttien määrittely
+
+	- Luo jokin komponentti, joka sisältää datan, joka on jokaisella boidilla
+	
+		esim.
+		public struct BoidData : IComponentData {
+			public float3 velocity;
+		}
+	
+	- Toinen komponentti, joka sisältää asetukset jokaiselle boidille
+
+		esim.
+		public struct BoidSettings : IComponentData {
+			public float3 bounds;
+			public float speed;
+			public float separationDistance;
+			public float cohesionWeight;
+			public float alignmentWeight;
+		}
+	
+	- Pyritään erottelemaan tiedot logiikasta DOTSia käytettäessä.
+
+3. Boidien luonti
+
+	- Luo boidi-instansseja alussa paljon.
+	- Anna niille satunnaiset sijainnit ja nopeudet.
+	
+4. Tee systeemit, joilla boidit toimivat
+
+	- separation = toisten boidien väisteleminen
+	- cohesion = boidi liikkuu kohti lähimpien boidien keskipistettä.
+	- alignment = boidi liikkuu samaan suuntaan kuin naapurit.
+	- movement = Käyttää yllä mainittuja käyttäytymisiä ja saa boidin liikkumaan niiden mukaisesti.
+
+5. Mahdollista optimisaatiota
+
+	- Burst
+	- Jobit
